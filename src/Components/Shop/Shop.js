@@ -1,24 +1,32 @@
 import React from 'react'
 import Cart from '../Cart/Cart'
-import { addToCart } from '../Redux/Action/Action'
+import { addToCart, removeToCart } from '../Redux/Action/Action'
 import { connect } from 'react-redux'
 
 const Shop = (props) => {
 
-    const { products, addToCart } = props;
-    console.log(props);
+    const { cart, products, removeToCart } = props;
+    console.log(cart);
+
     return (
         <div>
-            <h4> Shop :  </h4>
+            <h4> Shop : {cart.length}  </h4>
+
+            <ul>
+                {
+                    cart.map((pd) => <li> {pd.actionName} <button onClick={() => { removeToCart(pd.cartId) }} > X </button></li>)
+                }
+            </ul>
+
             {
                 products.map(item => <Cart
                     item={item}
-                    addToCart={addToCart}
                 />)
             }
         </div>
     )
 }
+
 
 const mapStateToProps = state => {
     return {
@@ -28,8 +36,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-    addToCart: addToCart
+    removeToCart: removeToCart
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shop)
